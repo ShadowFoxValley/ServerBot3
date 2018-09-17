@@ -25,16 +25,23 @@ func (data Commands) roles() {
 	}
 
 	var roleId, check, _ = func(rolesList []*discordgo.Role, target string) (string, bool, int){
+		var position int
 
 		for i := range rolesList {
-			if strings.ToLower(rolesList[i].Name) == target && rolesList[i].Position < 36{
+			if rolesList[i].ID == "374901853332176898" {
+				position = rolesList[i].Position
+				break
+			}
+		}
+		
+		for i := range rolesList {
+			if strings.ToLower(rolesList[i].Name) == target || rolesList[i].Name == target && rolesList[i].Position < position{
 				return rolesList[i].ID, true, rolesList[i].Position
 			}
 		}
 
 		return "", false, 0
 	}(rolesList, targetRoleString)
-
 
 
 	if check == false {
