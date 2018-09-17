@@ -1,0 +1,4 @@
+.idea/
+*.exe*
+*.jpg*
+config.go
