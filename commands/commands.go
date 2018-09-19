@@ -120,13 +120,21 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 			}()
 			return
 		}
+
+		var fieldInfo = "Payed respect"
+
+		if r.Emoji.Name == "♿" {
+			fieldInfo = "Скинулись на коляску"
+		}
+
+
 		embed := &discordgo.MessageEmbed{
 			Title:  elem.Embeds[0].Title,
 			Author: elem.Embeds[0].Author,
 			Color:  elem.Embeds[0].Color,
 			Fields: []*discordgo.MessageEmbedField{
 				{
-					Name:   "Payed respect",
+					Name:   fieldInfo,
 					Value:  elem.Embeds[0].Fields[0].Value + "\n" + user.Username,
 					Inline: false,
 				},

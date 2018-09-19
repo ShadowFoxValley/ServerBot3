@@ -33,7 +33,7 @@ func (data Commands) roles() {
 				break
 			}
 		}
-		
+
 		for i := range rolesList {
 			if strings.ToLower(rolesList[i].Name) == target || rolesList[i].Name == target && rolesList[i].Position < position{
 				return rolesList[i].ID, true, rolesList[i].Position
