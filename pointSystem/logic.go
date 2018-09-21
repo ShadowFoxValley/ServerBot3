@@ -34,6 +34,15 @@ func GetUserPoints(userId string) (int, bool){
 	return userPoints, true
 }
 
+func GetStarPointTop() (*sql.Rows, bool){
+	points, err := database.Query("SELECT username, starpoint FROM users ORDER BY starpoint DESC LIMIT 10")
+	if err != nil {
+		log.Println(err.Error())
+		return nil, false
+	}
+	return points, true
+}
+
 func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	if r.UserID == s.State.User.ID {
 		return

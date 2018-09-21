@@ -26,14 +26,16 @@ func (data Commands) help(){
 		"[roll](roll %long long int% %long long int%)\n" +
 		"[throw](throw {mention})\n" +
 		"[spank](spank {mention})\n" +
-		"[roles](roles get/remove {rolename})\n" +
+		"[roles manipulation](roles get/remove {rolename})\n" +
 		"[respect](respect anything)\n" +
 		"[wheelchair](wheelchair %mention%)\n" +
 		"< Everything inside %% is optional >\n\n" +
-		"[poll](poll\n" +
+		"[make poll](poll\n" +
 		"option 1\n" +
 		"option 10\n" +
-		")\n" +
+		")\n\n" +
+		"[stars balance](stars)\n" +
+		"[stars toplist](stars top)\n\n" +
 		"**Стражи:**\n" +
 		"[root](root mute/unmute {mention})" +
 		"```"
