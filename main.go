@@ -2,6 +2,7 @@ package main
 
 import (
 	"ServerBot3/commands"
+	"ServerBot3/pointSystem"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"os"
@@ -33,6 +34,12 @@ func main() {
 
 	//Отлов реакций для команд wheelchair и respect
 	dg.AddHandler(commands.ReactionAdd)
+
+	//Отлов добавления и удаления звездочек
+	pointSystem.StartPointSystemPreparing()
+
+	dg.AddHandler(pointSystem.ReactionAdd)
+	dg.AddHandler(pointSystem.ReactionRemove)
 
 
 	// Open a websocket connection to Discord and begin listening.

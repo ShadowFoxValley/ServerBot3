@@ -94,6 +94,10 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	case "help":
 		commandWorker.help()
 		break
+
+	case "stars":
+		commandWorker.stats()
+		break
 	}
 }
 
@@ -101,7 +105,6 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	if r.UserID == s.State.User.ID {
 		return
 	}
-
 
 	if elem, ok := trackReactions[r.MessageID]; ok && (r.Emoji.Name == "🇫" || r.Emoji.Name == "♿")  {
 		user, err := s.User(r.UserID)
