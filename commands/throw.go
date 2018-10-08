@@ -14,7 +14,7 @@ func (data Commands) throw() {
 	}
 
 	var targetAllInfo, _ = data.mainSession.GuildMember(data.guild.ID, target[0].ID)
-	var authorInfo, _ = data.mainSession.GuildMember(data.guild.ID, target[0].ID)
+	var authorInfo, _ = data.mainSession.GuildMember(data.guild.ID, data.message.Author.ID)
 
 	var targetNick, authorNick = targetAllInfo.Nick, authorInfo.Nick
 

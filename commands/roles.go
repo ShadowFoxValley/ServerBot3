@@ -24,25 +24,24 @@ func (data Commands) roles() {
 		return
 	}
 
-	var roleId, check, _ = func(rolesList []*discordgo.Role, target string) (string, bool, int){
-		var position int
+	var roleId, check, _ = func(rolesList []*discordgo.Role, target string) (string, bool, int) {
+		var heroPosition int
 
-		for i := range rolesList {
+		for i:=range rolesList {
 			if rolesList[i].ID == "374901853332176898" {
-				position = rolesList[i].Position
+				heroPosition = rolesList[i].Position
 				break
 			}
 		}
 
 		for i := range rolesList {
-			if strings.ToLower(rolesList[i].Name) == target || rolesList[i].Name == target && rolesList[i].Position < position{
+			if strings.ToLower(rolesList[i].Name) == strings.ToLower(target) && rolesList[i].Position < heroPosition {
 				return rolesList[i].ID, true, rolesList[i].Position
 			}
 		}
 
 		return "", false, 0
 	}(rolesList, targetRoleString)
-
 
 	if check == false {
 		data.mainSession.ChannelMessageSend(data.channelId, "Роль не найдена")
