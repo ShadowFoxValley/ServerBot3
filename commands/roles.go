@@ -27,7 +27,7 @@ func (data Commands) roles() {
 	var roleId, check, _ = func(rolesList []*discordgo.Role, target string) (string, bool, int) {
 		var heroPosition int
 
-		for i:=range rolesList {
+		for i := range rolesList {
 			if rolesList[i].ID == "374901853332176898" {
 				heroPosition = rolesList[i].Position
 				break

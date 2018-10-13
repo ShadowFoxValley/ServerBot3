@@ -9,20 +9,20 @@ import (
 )
 
 var (
-	database *sql.DB
+	Database *sql.DB
 )
 
-func StartPointSystemPreparing(){
+func StartPointSystemPreparing() {
 	var databaseTmp, err = sql.Open("mysql", "discord:truePass@tcp(localhost:3306)/discord")
 	if err != nil {
 		log.Print(err.Error())
 	} else {
-		database = databaseTmp
+		Database = databaseTmp
 	}
 }
 
-func GetUserPoints(userId string) (int, bool){
-	points, err := database.Query("SELECT starpoint FROM users WHERE discord_id=?", userId)
+func GetUserPoints(userId string) (int, bool) {
+	points, err := Database.Query("SELECT starpoint FROM users WHERE discord_id=?", userId)
 	if err != nil {
 		log.Println(err.Error())
 		return 0, false
@@ -34,8 +34,8 @@ func GetUserPoints(userId string) (int, bool){
 	return userPoints, true
 }
 
-func GetStarPointTop() (*sql.Rows, bool){
-	points, err := database.Query("SELECT username, starpoint FROM users ORDER BY starpoint DESC LIMIT 10")
+func GetStarPointTop() (*sql.Rows, bool) {
+	points, err := Database.Query("SELECT username, starpoint FROM users ORDER BY starpoint DESC LIMIT 10")
 	if err != nil {
 		log.Println(err.Error())
 		return nil, false
@@ -49,7 +49,7 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	}
 
 	if r.Emoji.Name == "⭐" {
-		var targetMessage, errorGetMessage= s.ChannelMessage(r.ChannelID, r.MessageID)
+		var targetMessage, errorGetMessage = s.ChannelMessage(r.ChannelID, r.MessageID)
 		if errorGetMessage != nil {
 			return
 		}
@@ -58,17 +58,21 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 			return
 		}
 
-		database.Query("UPDATE users SET starpoint = `starpoint`+1 WHERE discord_id=?", targetMessage.Author.ID)
+		var _, errAddStar = Database.Exec("UPDATE users SET starpoint = `starpoint`+1 WHERE discord_id=?", targetMessage.Author.ID)
+
+		if errAddStar != nil {
+			log.Println(errAddStar)
+		}
 	}
 }
 
-func ReactionRemove(s *discordgo.Session, r *discordgo.MessageReactionRemove){
+func ReactionRemove(s *discordgo.Session, r *discordgo.MessageReactionRemove) {
 	if r.UserID == s.State.User.ID {
 		return
 	}
 
 	if r.Emoji.Name == "⭐" {
-		var targetMessage, errorGetMessage= s.ChannelMessage(r.ChannelID, r.MessageID)
+		var targetMessage, errorGetMessage = s.ChannelMessage(r.ChannelID, r.MessageID)
 		if errorGetMessage != nil {
 			return
 		}
@@ -77,6 +81,10 @@ func ReactionRemove(s *discordgo.Session, r *discordgo.MessageReactionRemove){
 			return
 		}
 
-		database.Query("UPDATE users SET starpoint = `starpoint`-1 WHERE discord_id=?", targetMessage.Author.ID)
+		var _, errRemoveStar = Database.Exec("UPDATE users SET starpoint = `starpoint`-1 WHERE discord_id=?", targetMessage.Author.ID)
+
+		if errRemoveStar != nil {
+			log.Println(errRemoveStar)
+		}
 	}
 }

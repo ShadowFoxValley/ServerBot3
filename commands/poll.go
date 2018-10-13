@@ -1,11 +1,11 @@
 package commands
 
 import (
-	"strings"
 	"github.com/bwmarrin/discordgo"
-	"strconv"
 	"log"
-	)
+	"strconv"
+	"strings"
+)
 
 var emojiPoll = []string{
 	"0⃣",
@@ -22,12 +22,12 @@ var emojiPoll = []string{
 
 func (data Commands) poll() {
 	var (
-		messageData = strings.Split(data.message.Content, "\n")
-		variants = messageData[1:]
+		messageData  = strings.Split(data.message.Content, "\n")
+		variants     = messageData[1:]
 		VariantField string
 	)
 
-	for i:=range variants{
+	for i := range variants {
 		VariantField += strconv.Itoa(i) + ") " + variants[i] + "\n"
 	}
 
@@ -35,10 +35,10 @@ func (data Commands) poll() {
 		Author: &discordgo.MessageEmbedAuthor{Name: data.message.Author.Username},
 		Color:  0x00ff00,
 		Fields: []*discordgo.MessageEmbedField{{
-				Name:   "Варианты",
-				Value:  VariantField,
-				Inline: true,
-			},
+			Name:   "Варианты",
+			Value:  VariantField,
+			Inline: true,
+		},
 		},
 	}
 
@@ -47,8 +47,8 @@ func (data Commands) poll() {
 		log.Print(sendError.Error())
 	}
 
-	go func(s *discordgo.Session, m *discordgo.Message, num int){
-		for i:=0; i < num; i++{
+	go func(s *discordgo.Session, m *discordgo.Message, num int) {
+		for i := 0; i < num; i++ {
 			s.MessageReactionAdd(m.ChannelID, m.ID, emojiPoll[i])
 		}
 	}(data.mainSession, message, len(variants))

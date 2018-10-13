@@ -1,13 +1,11 @@
 package commands
 
 import (
-	"strings"
 	"github.com/bwmarrin/discordgo"
 	"log"
+	"strings"
 	"time"
 )
-
-
 
 func (data Commands) respect() {
 	args := strings.Split(data.message.Content, " ")

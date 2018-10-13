@@ -10,7 +10,6 @@ func (data Commands) wheelchair() {
 	//args := strings.Split(data.message.Content, " ")
 	var title string
 
-
 	if cap(data.message.Mentions) > 0 {
 		title = "Скидываемся на коляску для  " + data.message.Mentions[0].Username
 	} else {

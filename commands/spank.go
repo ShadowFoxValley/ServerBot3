@@ -2,13 +2,13 @@ package commands
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/thanhpk/randstr"
 	"github.com/disintegration/imaging"
-	"image/color"
+	"github.com/fogleman/gg"
+	"github.com/thanhpk/randstr"
 	"image"
+	"image/color"
 	"log"
 	"os"
-	"github.com/fogleman/gg"
 )
 
 var (

@@ -1,11 +1,12 @@
 package commands
 
 import (
+	"ServerBot3/members"
 	"github.com/bwmarrin/discordgo"
 	"strings"
 )
 
-func (data Commands) muteManipulate(typeCommand string){
+func (data Commands) muteManipulate(typeCommand string) {
 
 	// Start check permissions
 	var authorAllInfo, errorGetUser = data.mainSession.GuildMember(data.guild.ID, data.message.Author.ID)
@@ -31,7 +32,7 @@ func (data Commands) muteManipulate(typeCommand string){
 			return
 		}
 
-		if typeCommand == "mute"{
+		if typeCommand == "mute" {
 
 			for i := range targets {
 				data.mainSession.GuildMemberRoleAdd(data.guild.ID, targets[i].ID, "375707226800652290")
@@ -51,16 +52,20 @@ func (data Commands) muteManipulate(typeCommand string){
 
 }
 
-func (data Commands) root(){
+func (data Commands) root() {
 
 	var elements = strings.Split(data.message.Content, " ")
-	if len(elements) < 4 {
+	if len(elements) < 3 {
 		data.mainSession.ChannelMessageSend(data.channelId, "Syntax error! Usage: ``sudo root mute/unmute mention``")
 	}
 
 	if elements[2] == "mute" || elements[2] == "unmute" {
 		data.muteManipulate(elements[2])
 		return
+	} else if elements[2] == "users" {
+		if elements[3] == "update" {
+			members.UpdateUsers(data.mainSession, data.guild.ID)
+		}
 	}
 
 }

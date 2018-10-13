@@ -8,9 +8,8 @@ import (
 	"strings"
 )
 
-func (data Commands) stats(){
+func (data Commands) stats() {
 	var elements = strings.Split(data.message.Content, " ")
-
 
 	if len(elements) == 2 {
 		var points, check = pointSystem.GetUserPoints(data.message.Author.ID)
@@ -20,7 +19,7 @@ func (data Commands) stats(){
 			return
 		}
 
-		data.mainSession.ChannelMessageSend(data.message.ChannelID, "You have " + strconv.Itoa(points) + " stars ⭐")
+		data.mainSession.ChannelMessageSend(data.message.ChannelID, "You have "+strconv.Itoa(points)+" stars ⭐")
 	} else if len(elements) == 3 {
 		if elements[2] == "top" {
 			var userTopList, check = pointSystem.GetStarPointTop()
@@ -28,7 +27,6 @@ func (data Commands) stats(){
 				data.mainSession.ChannelMessageSend(data.message.ChannelID, "Error while getting data")
 				return
 			}
-
 
 			var username string
 			var points int

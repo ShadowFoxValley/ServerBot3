@@ -15,12 +15,12 @@ var (
 
 type Commands struct {
 	mainSession *discordgo.Session
-	message *discordgo.MessageCreate
-	channelId string
-	guild *discordgo.Guild
+	message     *discordgo.MessageCreate
+	channelId   string
+	guild       *discordgo.Guild
 }
 
-func (data Commands) help(){
+func (data Commands) help() {
 	const help = "```markdown\n" +
 		"1. Commands\n" +
 		"[roll](roll %long long int% %long long int%)\n" +
@@ -108,7 +108,7 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 		return
 	}
 
-	if elem, ok := trackReactions[r.MessageID]; ok && (r.Emoji.Name == "🇫" || r.Emoji.Name == "♿")  {
+	if elem, ok := trackReactions[r.MessageID]; ok && (r.Emoji.Name == "🇫" || r.Emoji.Name == "♿") {
 		user, err := s.User(r.UserID)
 		if err != nil {
 			log.Println(err)
@@ -131,7 +131,6 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 		if r.Emoji.Name == "♿" {
 			fieldInfo = "Скинулись на коляску"
 		}
-
 
 		embed := &discordgo.MessageEmbed{
 			Title:  elem.Embeds[0].Title,
@@ -159,6 +158,5 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 			}
 		}()
 	}
-
 
 }

@@ -1,13 +1,13 @@
 package commands
 
 import (
-	"strings"
-	"strconv"
-	"math/rand"
 	"log"
+	"math/rand"
+	"strconv"
+	"strings"
 )
 
-func (data Commands) roll(){
+func (data Commands) roll() {
 	var elements = strings.Split(data.message.Content, " ")
 	var first, second, result, elemLen = 0, 100, 0, len(elements)
 

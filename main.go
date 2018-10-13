@@ -2,6 +2,7 @@ package main
 
 import (
 	"ServerBot3/commands"
+	"ServerBot3/members"
 	"ServerBot3/pointSystem"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
@@ -12,16 +13,14 @@ import (
 )
 
 var (
-
-	dgv *discordgo.VoiceConnection
+	dgv                 *discordgo.VoiceConnection
 	mainSessionEndpoint *discordgo.Session
 )
-
 
 func main() {
 
 	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New("Bot "+token)
+	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
@@ -41,6 +40,8 @@ func main() {
 	dg.AddHandler(pointSystem.ReactionAdd)
 	dg.AddHandler(pointSystem.ReactionRemove)
 
+	// Новый пользователь
+	dg.AddHandler(members.MemberAdd)
 
 	// Open a websocket connection to Discord and begin listening.
 	err = dg.Open()
@@ -48,7 +49,6 @@ func main() {
 		fmt.Println("error opening connection,", err)
 		return
 	}
-
 
 	// Wait here until CTRL-C or other term signal is received.
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
