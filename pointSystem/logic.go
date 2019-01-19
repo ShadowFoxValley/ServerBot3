@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/bwmarrin/discordgo"
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -48,22 +49,28 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 		return
 	}
 
-	if r.Emoji.Name == "⭐" {
-		var targetMessage, errorGetMessage = s.ChannelMessage(r.ChannelID, r.MessageID)
-		if errorGetMessage != nil {
-			return
-		}
-
-		if r.UserID == targetMessage.Author.ID {
-			return
-		}
-
-		var _, errAddStar = Database.Exec("UPDATE users SET starpoint = `starpoint`+1 WHERE discord_id=?", targetMessage.Author.ID)
-
-		if errAddStar != nil {
-			log.Println(errAddStar)
-		}
+	var targetMessage, errorGetMessage = s.ChannelMessage(r.ChannelID, r.MessageID)
+	if errorGetMessage != nil {
+		return
 	}
+
+	var messageTime, _ = targetMessage.Timestamp.Parse()
+	var timeDiff = time.Now().Sub(messageTime).Seconds()
+
+	if timeDiff > 180 {
+		return
+	}
+
+	if r.UserID == targetMessage.Author.ID {
+		return
+	}
+
+	var _, errAddStar = Database.Exec("UPDATE users SET starpoint = `starpoint`+1 WHERE discord_id=?", targetMessage.Author.ID)
+
+	if errAddStar != nil {
+		log.Println(errAddStar)
+	}
+
 }
 
 func ReactionRemove(s *discordgo.Session, r *discordgo.MessageReactionRemove) {
@@ -71,20 +78,25 @@ func ReactionRemove(s *discordgo.Session, r *discordgo.MessageReactionRemove) {
 		return
 	}
 
-	if r.Emoji.Name == "⭐" {
-		var targetMessage, errorGetMessage = s.ChannelMessage(r.ChannelID, r.MessageID)
-		if errorGetMessage != nil {
-			return
-		}
+	var targetMessage, errorGetMessage = s.ChannelMessage(r.ChannelID, r.MessageID)
+	if errorGetMessage != nil {
+		return
+	}
 
-		if r.UserID == targetMessage.Author.ID {
-			return
-		}
+	var messageTime, _ = targetMessage.Timestamp.Parse()
+	var timeDiff = time.Now().Sub(messageTime).Seconds()
 
-		var _, errRemoveStar = Database.Exec("UPDATE users SET starpoint = `starpoint`-1 WHERE discord_id=?", targetMessage.Author.ID)
+	if timeDiff > 180 {
+		return
+	}
 
-		if errRemoveStar != nil {
-			log.Println(errRemoveStar)
-		}
+	if r.UserID == targetMessage.Author.ID {
+		return
+	}
+
+	var _, errRemoveStar = Database.Exec("UPDATE users SET starpoint = `starpoint`-1 WHERE discord_id=?", targetMessage.Author.ID)
+
+	if errRemoveStar != nil {
+		log.Println(errRemoveStar)
 	}
 }

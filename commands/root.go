@@ -1,58 +1,46 @@
 package commands
 
 import (
+	"ServerBot3/common"
 	"ServerBot3/members"
-	"github.com/bwmarrin/discordgo"
 	"strings"
 )
 
 func (data Commands) muteManipulate(typeCommand string) {
 
+	var targets = data.message.Mentions
+
+	if len(targets) == 0 {
+		data.mainSession.ChannelMessageSend(data.channelId, "Выбери цель")
+		return
+	}
+
+	if typeCommand == "mute" {
+
+		for i := range targets {
+			data.mainSession.GuildMemberRoleAdd(data.guild.ID, targets[i].ID, "375707226800652290")
+		}
+
+	} else if typeCommand == "unmute" {
+
+		for i := range targets {
+			data.mainSession.GuildMemberRoleRemove(data.guild.ID, targets[i].ID, "375707226800652290")
+		}
+	}
+
+}
+
+func (data Commands) root() {
 	// Start check permissions
 	var authorAllInfo, errorGetUser = data.mainSession.GuildMember(data.guild.ID, data.message.Author.ID)
 	if errorGetUser != nil {
 		data.mainSession.ChannelMessageSend(data.channelId, errorGetUser.Error())
 	}
 
-	var checkFunction = func(member *discordgo.Member) bool { // Ну, вроде удобно
-		for i := range member.Roles {
-			if member.Roles[i] == "374707108764975109" || member.Roles[i] == "485056864309084160" {
-				return true
-			}
-		}
-		return false
-	}
-	// End check permissions
-
-	if checkFunction(authorAllInfo) {
-		var targets = data.message.Mentions
-
-		if len(targets) == 0 {
-			data.mainSession.ChannelMessageSend(data.channelId, "Выбери цель")
-			return
-		}
-
-		if typeCommand == "mute" {
-
-			for i := range targets {
-				data.mainSession.GuildMemberRoleAdd(data.guild.ID, targets[i].ID, "375707226800652290")
-			}
-
-		} else if typeCommand == "unmute" {
-
-			for i := range targets {
-				data.mainSession.GuildMemberRoleRemove(data.guild.ID, targets[i].ID, "375707226800652290")
-			}
-
-		}
-
-	} else {
+	if !common.CheckPermit(authorAllInfo) {
 		data.mainSession.ChannelMessageSend(data.channelId, "You must be root for this")
+		return
 	}
-
-}
-
-func (data Commands) root() {
 
 	var elements = strings.Split(data.message.Content, " ")
 	if len(elements) < 3 {

@@ -24,9 +24,6 @@ func UpdateUsers(s *discordgo.Session, guildId string) {
 	}
 
 	for i := range userList {
-		_, err := pointSystem.Database.Exec("INSERT INTO users (username, discord_id, starpoint) VALUES(?, ?, ?)", userList[i].User.Username, userList[i].User.ID, 0)
-		if err != nil {
-			log.Println(err)
-		}
+		pointSystem.Database.Exec("INSERT INTO users (username, discord_id, starpoint) VALUES(?, ?, ?)", userList[i].User.Username, userList[i].User.ID, 0)
 	}
 }

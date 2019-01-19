@@ -19,7 +19,7 @@ func (data Commands) stats() {
 			return
 		}
 
-		data.mainSession.ChannelMessageSend(data.message.ChannelID, "You have "+strconv.Itoa(points)+" stars ⭐")
+		data.mainSession.ChannelMessageSend(data.message.ChannelID, "You have "+strconv.Itoa(points)+" stars")
 	} else if len(elements) == 3 {
 		if elements[2] == "top" {
 			var userTopList, check = pointSystem.GetStarPointTop()

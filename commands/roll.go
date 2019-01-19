@@ -10,8 +10,7 @@ import (
 func (data Commands) roll() {
 	var elements = strings.Split(data.message.Content, " ")
 	var first, second, result, elemLen = 0, 100, 0, len(elements)
-
-	log.Print(elements)
+	//log.Print(elements)
 
 	if elemLen == 3 {
 		second, _ = strconv.Atoi(elements[2])
