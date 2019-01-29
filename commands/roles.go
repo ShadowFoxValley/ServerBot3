@@ -9,28 +9,32 @@ func (data Commands) roles() {
 	var elements = strings.Split(data.message.Content, " ")
 	var rolesList, errorGetRoles = data.mainSession.GuildRoles(data.guild.ID)
 
-
 	if len(elements) == 2 {
 
 		var roleListString = ""
-		var permit = false
+		var heroPosition int
 
 		for i := range rolesList {
 			if rolesList[i].ID == "374901853332176898" {
-				permit = true
+				heroPosition = rolesList[i].Position
 				break
 			}
-			roleListString += rolesList[i].Name + ", "
 		}
-		data.mainSession.ChannelMessageSend(data.channelId, "Current list: "+roleListString)
+
+		for i := range rolesList {
+			if rolesList[i].Position < heroPosition {
+				roleListString += rolesList[i].Name + ", "
+			}
+		}
+
+		data.mainSession.ChannelMessageSend(data.channelId, "Current list: ``"+roleListString+"``")
 		return
 	}
-	
+
 	if len(elements) < 4 {
 		data.mainSession.ChannelMessageSend(data.channelId, "Syntax error! Usage: ``sudo roles get/remove %rolename%``")
 		return
 	}
-
 
 	if errorGetRoles != nil {
 		data.mainSession.ChannelMessageSend(data.channelId, errorGetRoles.Error())
@@ -67,11 +71,8 @@ func (data Commands) roles() {
 		return
 	}
 
-	//data.mainSession.ChannelMessageSend(data.channelId, strconv.Itoa(position)+" ``"+targetRoleString+"``")
-	//return
 
 	if elements[2] == "get" {
-		//data.mainSession.ChannelMessageSend(data.channelId, "You wanna get role?")
 		var errorRoleAdd = data.mainSession.GuildMemberRoleAdd(data.guild.ID, data.message.Author.ID, roleId)
 
 		if errorRoleAdd != nil {

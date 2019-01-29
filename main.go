@@ -18,7 +18,7 @@ var (
 )
 
 func main() {
-	var token = ""
+	var token = "NDIxNzAwNjI3ODc4Mzc5NTMx.DzGV-A.zfhYH6uCyCoOfpKeG6EFWgz7FpU"
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
