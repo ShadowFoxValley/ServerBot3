@@ -79,6 +79,7 @@ func (data Commands) root() {
 		if errorGetMessages != nil {
 			data.mainSession.ChannelMessageSend(data.channelId, errorGetMessages.Error())
 		}
+
 		for i:=range messagesForDelete{
 			go data.mainSession.ChannelMessageDelete(data.channelId, messagesForDelete[i].ID)
 		}

@@ -48,6 +48,10 @@ func ReactionAdd(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	if r.UserID == s.State.User.ID {
 		return
 	}
+	
+	if r.Emoji.ID == "🇫" || r.Emoji.ID == "♿" {
+		return
+	}
 
 	var targetMessage, errorGetMessage = s.ChannelMessage(r.ChannelID, r.MessageID)
 	if errorGetMessage != nil {
